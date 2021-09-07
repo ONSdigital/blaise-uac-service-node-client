@@ -1,30 +1,18 @@
 interface InstrumentUacDetails {
-    [uac: string]:Uac
+    [uac: string]: UacInfo
 }
 
-interface Uac {
+interface InstrumentUacDetailsByCaseId {
+    [case_id: string]: UacInfo
+}
+
+interface UacInfo {
     instrument_name: string,
     case_id: string,
     postcode_attempts: number,
     postcode_attempt_timestamp: string,
-    uac_chunks: UacChunks
-}
-
-interface UacChunks {
-    uac1: string,
-    uac2: string,
-    uac3: string
-}
-
-interface InstrumentUacDetailsByCaseId {
-    [case_id: string]:Uac
-}
-
-interface Uac {
-    instrument_name: string,
-    postcode_attempts: number,
-    postcode_attempt_timestamp: string,
-    uac_chunks: UacChunks
+    uac_chunks: UacChunks,
+    FullUAC: string,
 }
 
 interface UacChunks {
