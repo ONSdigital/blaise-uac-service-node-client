@@ -1,0 +1,39 @@
+{
+  "name": "bus-api-node-client",
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
+  "version": "1.0.0",
+  "module": "lib/esm/bus-api-client.js",
+  "main": "lib/cjs/bus-api-client.js",
+  "types": "lib/esm/bus-api-client.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "yarn build:esm && yarn build:cjs",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module commonjs --outDir lib/cjs",
+    "test": "jest --coverage --watchAll=false"
+  },
+  "dependencies": {
+    "@babel/preset-env": "^7.14.7",
+    "axios": "^0.21.1",
+    "typescript": "~4.2.2"
+  },
+  "devDependencies": {
+    "@types/jest": "26.0.22",
+    "babel-jest": "^27.0.6",
+    "jest": "^27.0.6",
+    "ts-jest": "^27.0.3",
+    "@babel/core": "^7.12.1",
+    "@babel/preset-typescript": "^7.12.1",
+    "axios-mock-adapter": "^1.19.0",
+    "eslint": "^7.29.0",
+    "yarn": "^1.22.10"
+  },
+  "files": [
+    "/lib",
+    "/mocks"
+  ]
+}
