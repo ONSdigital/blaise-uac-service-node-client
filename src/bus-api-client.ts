@@ -1,6 +1,7 @@
 import AuthProvider from "./authentication/authentication-provider"
 import axios, {AxiosInstance} from "axios";
-import {InstrumentUacDetails} from "./interfaces/instrument-uac-details";
+
+import {InstrumentUacDetails, InstrumentUacDetailsByCaseId} from "./interfaces/instrument-uac-details";
 
 class BusApiClient {
     BUS_API_URL: string;
@@ -19,17 +20,23 @@ class BusApiClient {
         }
     }
 
-    async generateUacCodes(instrumentName: string, caseIds: string[]):Promise<void> {
+    async generateUacCodes(instrumentName: string, caseIds: string[]): Promise<InstrumentUacDetails> {
         const authHeader = await this.authProvider.getAuthHeader();
         const data = {
             "instrument_name": instrumentName,
             "case_ids": caseIds
         };
 
-        await this.post("/uacs/generate", data, {headers: authHeader});
+        return await this.post("/uacs/generate", data, {headers: authHeader});
     }
 
     async getUacCodes(instrumentName: string): Promise<InstrumentUacDetails> {
+        const authHeader = await this.authProvider.getAuthHeader();
+
+        return await this.get(`/uacs/instrument/${instrumentName}`, {headers: authHeader});
+    }
+
+    async getUacCodesByCaseId(instrumentName: string): Promise<InstrumentUacDetailsByCaseId> {
         const authHeader = await this.authProvider.getAuthHeader();
 
         return await this.get(`/uacs/instrument/${instrumentName}/bycaseid`, {headers: authHeader});
@@ -43,7 +50,7 @@ class BusApiClient {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private async get(url: string,  config: any): Promise<any> {
+    private async get(url: string, config: any): Promise<any> {
         const response = await this.httpClient.get(`${this.BUS_API_URL}${this.url(url)}`, config);
         return response.data;
     }
