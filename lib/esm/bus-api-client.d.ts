@@ -1,6 +1,7 @@
 import AuthProvider from "./authentication/authentication-provider";
 import { AxiosInstance } from "axios";
 import { InstrumentUacDetails, InstrumentUacDetailsByCaseId } from "./interfaces/instrument-uac-details";
+import { InstrumentUacDetailsMock, InstrumentUacDetailsByCaseIdMock } from "./mock-objects/instrument-uac-details";
 declare class BusApiClient {
     BUS_API_URL: string;
     BUS_CLIENT_ID: string;
@@ -15,3 +16,5 @@ declare class BusApiClient {
     private post;
 }
 export default BusApiClient;
+export { InstrumentUacDetails, InstrumentUacDetailsByCaseId };
+export { InstrumentUacDetailsMock, InstrumentUacDetailsByCaseIdMock };
