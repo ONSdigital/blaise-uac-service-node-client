@@ -2,7 +2,7 @@ import AuthProvider from "./authentication/authentication-provider"
 import axios, {AxiosInstance} from "axios";
 
 import {InstrumentUacDetails, InstrumentUacDetailsByCaseId} from "./interfaces/instrument-uac-details";
-import {InstrumentUacDetailsMock, InstrumentUacDetailsByCaseIdMock } from "./mock-objects/instrument-uac-details"
+import {InstrumentUacDetailsMock, InstrumentUacDetailsByCaseIdMock } from "./mock-objects/instrument-uac-details-mocks"
 
 class BusApiClient {
     BUS_API_URL: string;

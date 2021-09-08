@@ -15,7 +15,7 @@ import BusApiClient from "bus-api-node-client";
 
 Declare and consume the client by passing the URL of the api and the client ID:
 ```
-const busApiClient = new BusApiClient(`http://${BUS_API_URL}`, ${BUS_CLIENT_ID});
+const busApiClientTest = new BusApiClient(`http://${BUS_API_URL}`, ${BUS_CLIENT_ID});
 ```
 
 Declare timeout for the HTTP client:
@@ -26,7 +26,7 @@ a timeout for the client. If this parameter is not passed then the default is us
 To specify a timeout you need to instantiate the client as follows, where 1000 is the 
 timeout required:
 
-const busApiClient = new BusApiClient(`http://${BUS_API_URL}`, ${BUS_CLIENT_ID}, 1000);
+const busApiClientTest = new BusApiClient(`http://${BUS_API_URL}`, ${BUS_CLIENT_ID}, 1000);
 ```
 
 ### Mock objects
