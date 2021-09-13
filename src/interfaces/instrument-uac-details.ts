@@ -21,4 +21,8 @@ interface UacChunks {
     uac3: string
 }
 
-export type {InstrumentUacDetails, InstrumentUacDetailsByCaseId};
+interface UacCount {
+    count: number
+}
+
+export type {InstrumentUacDetails, InstrumentUacDetailsByCaseId, UacCount};

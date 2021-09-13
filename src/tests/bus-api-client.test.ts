@@ -12,25 +12,61 @@ const instrumentName = "DST1234A";
 const busApiClientTest = new BusApiClient(`http://${busApiUrl}`, busClientId);
 
 describe("busApiClientTest", () => {
-describe("generate UAC codes for an instrument", () => {
-    const caseIds = ["100000001", "100000002", "100000003"];
+    describe("generate UAC codes for an instrument from a list of case IDs", () => {
+        const caseIds = ["100000001", "100000002", "100000003"];
 
-    beforeEach(() => {
-      mock.onPost(`http://${busApiUrl}/uacs/generate`).reply(201,
-        InstrumentUacDetailsMock,
-      );
+        beforeEach(() => {
+            mock.onPost(`http://${busApiUrl}/uacs/generate`).reply(201,
+                InstrumentUacDetailsMock,
+            );
+        });
+
+        afterEach(() => {
+            mock.reset();
+        });
+
+        it("Generates UACs for all cases contained within the instrument", async () => {
+            let instrument = await busApiClientTest.generateUacCodes(instrumentName, caseIds);
+
+            expect(instrument).toEqual(InstrumentUacDetailsMock);
+        });
     });
 
-    afterEach(() => {
-      mock.reset();
+    describe("generate UAC codes for an instrument", () => {
+        beforeEach(() => {
+            mock.onPost(`http://${busApiUrl}/uacs/instrument/${instrumentName}`).reply(201,
+                InstrumentUacDetailsMock,
+            );
+        });
+
+        afterEach(() => {
+            mock.reset();
+        });
+
+        it("Generates UACs for all cases contained within the instrument", async () => {
+            let instrument = await busApiClientTest.generateUacCodesForInstrument(instrumentName);
+
+            expect(instrument).toEqual(InstrumentUacDetailsMock);
+        });
     });
 
-    it("Generates UACs for all cases contained within the instrument", async () => {
-      let instrument = await busApiClientTest.generateUacCodes(instrumentName, caseIds);
+    describe("get UAC count for an instrument", () => {
+        beforeEach(() => {
+            mock.onGet(`http://${busApiUrl}/uacs/instrument/${instrumentName}/count`).reply(200,
+                {count: 10},
+            );
+        });
 
-      expect(instrument).toEqual(InstrumentUacDetailsMock);
+        afterEach(() => {
+            mock.reset();
+        });
+
+        it("returns a object containing a count of the number of UACs codes", async () => {
+            let result = await busApiClientTest.getUacCodeCount(instrumentName);
+
+            expect(result.count).toEqual(10);
+        });
     });
-  });
 
     describe("get all UAC details for an instrument", () => {
         beforeEach(() => {

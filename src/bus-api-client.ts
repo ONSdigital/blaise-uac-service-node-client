@@ -1,7 +1,7 @@
 import AuthProvider from "./authentication/authentication-provider"
 import axios, {AxiosInstance} from "axios";
 
-import {InstrumentUacDetails, InstrumentUacDetailsByCaseId} from "./interfaces/instrument-uac-details";
+import {InstrumentUacDetails, InstrumentUacDetailsByCaseId, UacCount} from "./interfaces/instrument-uac-details";
 import {InstrumentUacDetailsMock, InstrumentUacDetailsByCaseIdMock } from "./mock-objects/instrument-uac-details-mocks"
 
 class BusApiClient {
@@ -29,6 +29,18 @@ class BusApiClient {
         };
 
         return await this.post("/uacs/generate", data, {headers: authHeader});
+    }
+
+    async generateUacCodesForInstrument(instrumentName: string): Promise<InstrumentUacDetails> {
+        const authHeader = await this.authProvider.getAuthHeader();
+
+        return await this.post(`/uacs/instrument/${instrumentName}`, null, {headers: authHeader});
+    }
+
+    async getUacCodeCount(instrumentName: string): Promise<UacCount> {
+        const authHeader = await this.authProvider.getAuthHeader();
+
+        return await this.get(`/uacs/instrument/${instrumentName}/count`, {headers: authHeader});
     }
 
     async getUacCodes(instrumentName: string): Promise<InstrumentUacDetails> {
