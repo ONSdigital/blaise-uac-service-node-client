@@ -1,4 +1,4 @@
-import {InstrumentUacDetails, InstrumentUacDetailsByCaseId} from "../interfaces/instrument-uac-details";
+import { InstrumentUacDetails, InstrumentUacDetailsByCaseId } from "../interfaces/instrument-uac-details";
 
 export const InstrumentUacDetailsMock: InstrumentUacDetails = {
     "000975653827": {
@@ -72,7 +72,8 @@ export const InstrumentUacDetailsByCaseIdMock: InstrumentUacDetailsByCaseId = {
         uac_chunks: {
             uac1: "9789",
             uac2: "7578",
-            uac3: "5367"
+            uac3: "5367",
+            uac4: "1234"
         },
         FullUAC: "978975785367"
     }

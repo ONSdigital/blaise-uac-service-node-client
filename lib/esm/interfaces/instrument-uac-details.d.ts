@@ -16,6 +16,7 @@ interface UacChunks {
     uac1: string;
     uac2: string;
     uac3: string;
+    uac4?: string;
 }
 interface UacCount {
     count: number;
