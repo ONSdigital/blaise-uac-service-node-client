@@ -1,7 +1,7 @@
 import AuthProvider from "./authentication/authentication-provider"
 import axios, {AxiosInstance} from "axios";
 
-import {InstrumentUacDetails, InstrumentUacDetailsByCaseId, UacCount} from "./interfaces/instrument-uac-details";
+import { InstrumentUacDetails, InstrumentUacDetailsByCaseId, UacCount, UacImport} from "./interfaces/instrument-uac-details";
 import {InstrumentUacDetailsMock, InstrumentUacDetailsByCaseIdMock } from "./mock-objects/instrument-uac-details-mocks"
 
 class BusApiClient {
@@ -22,37 +22,32 @@ class BusApiClient {
     }
 
     async generateUacCodes(instrumentName: string, caseIds: string[]): Promise<InstrumentUacDetails> {
-        const authHeader = await this.authProvider.getAuthHeader();
         const data = {
             "instrument_name": instrumentName,
             "case_ids": caseIds
         };
 
-        return await this.post("/uacs/generate", data, {headers: authHeader});
+        return await this.post("/uacs/generate", data);
     }
 
     async generateUacCodesForInstrument(instrumentName: string): Promise<InstrumentUacDetails> {
-        const authHeader = await this.authProvider.getAuthHeader();
-
-        return await this.post(`/uacs/instrument/${instrumentName}`, null, {headers: authHeader});
+        return await this.post(`/uacs/instrument/${instrumentName}`, null);
     }
 
     async getUacCodeCount(instrumentName: string): Promise<UacCount> {
-        const authHeader = await this.authProvider.getAuthHeader();
-
-        return await this.get(`/uacs/instrument/${instrumentName}/count`, {headers: authHeader});
+        return await this.get(`/uacs/instrument/${instrumentName}/count`);
     }
 
     async getUacCodes(instrumentName: string): Promise<InstrumentUacDetails> {
-        const authHeader = await this.authProvider.getAuthHeader();
-
-        return await this.get(`/uacs/instrument/${instrumentName}`, {headers: authHeader});
+        return await this.get(`/uacs/instrument/${instrumentName}`);
     }
 
     async getUacCodesByCaseId(instrumentName: string): Promise<InstrumentUacDetailsByCaseId> {
-        const authHeader = await this.authProvider.getAuthHeader();
+        return await this.get(`/uacs/instrument/${instrumentName}/bycaseid`);
+    }
 
-        return await this.get(`/uacs/instrument/${instrumentName}/bycaseid`, {headers: authHeader});
+    async importUACs(uacs: string[]): Promise<UacImport> {
+        return await this.post(`/uacs/import`, uacs)
     }
 
     private url(url: string): string {
@@ -63,13 +58,15 @@ class BusApiClient {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private async get(url: string, config: any): Promise<any> {
+    private async get(url: string): Promise<any> {
+        const config = {headers: await this.authProvider.getAuthHeader()}
         const response = await this.httpClient.get(`${this.BUS_API_URL}${this.url(url)}`, config);
         return response.data;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-    private async post(url: string, data: any, config: any): Promise<any> {
+    private async post(url: string, data: any): Promise<any> {
+        const config = { headers: await this.authProvider.getAuthHeader() }
         const response = await this.httpClient.post(`${this.BUS_API_URL}${this.url(url)}`, data, config);
         return response.data;
     }
