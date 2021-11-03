@@ -103,4 +103,22 @@ describe("busApiClientTest", () => {
             expect(instruments).toEqual(InstrumentUacDetailsByCaseIdMock);
         });
     });
+
+    describe("import uacs", () => {
+        beforeEach(() => {
+            mock.onPost(`http://${busApiUrl}/uacs/import`).reply(200,
+                {uacs_imported: 2},
+            );
+        });
+
+        afterEach(() => {
+            mock.reset();
+        });
+
+        it("returns a count of uacs imported", async () => {
+            let uacImport = await busApiClientTest.importUACs(["123412341234", "432143214321"]);
+
+            expect(uacImport.uacs_imported).toEqual(2);
+        });
+    })
 });
