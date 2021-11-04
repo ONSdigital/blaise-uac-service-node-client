@@ -1,6 +1,6 @@
 import AuthProvider from "./authentication/authentication-provider";
 import { AxiosInstance } from "axios";
-import { InstrumentUacDetails, InstrumentUacDetailsByCaseId, UacCount } from "./interfaces/instrument-uac-details";
+import { InstrumentUacDetails, InstrumentUacDetailsByCaseId, UacCount, UacImport } from "./interfaces/instrument-uac-details";
 import { InstrumentUacDetailsMock, InstrumentUacDetailsByCaseIdMock } from "./mock-objects/instrument-uac-details-mocks";
 declare class BusApiClient {
     BUS_API_URL: string;
@@ -13,6 +13,7 @@ declare class BusApiClient {
     getUacCodeCount(instrumentName: string): Promise<UacCount>;
     getUacCodes(instrumentName: string): Promise<InstrumentUacDetails>;
     getUacCodesByCaseId(instrumentName: string): Promise<InstrumentUacDetailsByCaseId>;
+    importUACs(uacs: string[]): Promise<UacImport>;
     private url;
     private get;
     private post;

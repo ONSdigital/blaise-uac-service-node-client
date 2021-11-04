@@ -21,4 +21,7 @@ interface UacChunks {
 interface UacCount {
     count: number;
 }
-export type { InstrumentUacDetails, InstrumentUacDetailsByCaseId, UacCount };
+interface UacImport {
+    uacs_imported: number;
+}
+export type { InstrumentUacDetails, InstrumentUacDetailsByCaseId, UacCount, UacImport };
