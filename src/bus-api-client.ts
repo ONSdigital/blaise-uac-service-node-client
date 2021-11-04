@@ -66,7 +66,11 @@ class BusApiClient {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
     private async post(url: string, data: any): Promise<any> {
-        const config = { headers: await this.authProvider.getAuthHeader() }
+        const config = {
+            headers: await this.authProvider.getAuthHeader(),
+            maxContentLength: Infinity,
+            maxBodyLength: Infinity,
+         }
         const response = await this.httpClient.post(`${this.BUS_API_URL}${this.url(url)}`, data, config);
         return response.data;
     }
