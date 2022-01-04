@@ -12,7 +12,7 @@ interface UacInfo {
     postcode_attempts: number,
     postcode_attempt_timestamp: string,
     uac_chunks: UacChunks,
-    FullUAC: string,
+    full_uac?: string,
 }
 
 interface UacChunks {
