@@ -9,8 +9,6 @@ interface InstrumentUacDetailsByCaseId {
 interface UacInfo {
     instrument_name: string,
     case_id: string,
-    postcode_attempts: number,
-    postcode_attempt_timestamp: string,
     uac_chunks: UacChunks,
     full_uac?: string,
 }

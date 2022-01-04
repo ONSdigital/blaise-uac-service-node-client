@@ -4,8 +4,6 @@ export const InstrumentUacDetailsMock: InstrumentUacDetails = {
     "000975653827": {
         instrument_name: "dst2106a",
         case_id: "100000001",
-        postcode_attempts: 0,
-        postcode_attempt_timestamp: "",
         uac_chunks: {
             uac1: "0009",
             uac2: "7565",
@@ -16,8 +14,6 @@ export const InstrumentUacDetailsMock: InstrumentUacDetails = {
     "345365454564": {
         instrument_name: "dst2106a",
         case_id: "100000002",
-        postcode_attempts: 0,
-        postcode_attempt_timestamp: "",
         uac_chunks: {
             uac1: "3453",
             uac2: "6545",
@@ -28,8 +24,6 @@ export const InstrumentUacDetailsMock: InstrumentUacDetails = {
     "978975785367": {
         instrument_name: "dst2106a",
         case_id: "100000003",
-        postcode_attempts: 0,
-        postcode_attempt_timestamp: "",
         uac_chunks: {
             uac1: "9789",
             uac2: "7578",
@@ -43,8 +37,6 @@ export const InstrumentUacDetailsByCaseIdMock: InstrumentUacDetailsByCaseId = {
     "100000001": {
         instrument_name: "dst2106a",
         case_id: "100000001",
-        postcode_attempts: 0,
-        postcode_attempt_timestamp: "",
         uac_chunks: {
             uac1: "0009",
             uac2: "7565",
@@ -55,8 +47,6 @@ export const InstrumentUacDetailsByCaseIdMock: InstrumentUacDetailsByCaseId = {
     "100000002": {
         instrument_name: "dst2106a",
         case_id: "100000002",
-        postcode_attempts: 0,
-        postcode_attempt_timestamp: "",
         uac_chunks: {
             uac1: "3453",
             uac2: "6545",
@@ -67,8 +57,6 @@ export const InstrumentUacDetailsByCaseIdMock: InstrumentUacDetailsByCaseId = {
     "100000003": {
         instrument_name: "dst2106a",
         case_id: "100000003",
-        postcode_attempts: 0,
-        postcode_attempt_timestamp: "",
         uac_chunks: {
             uac1: "9789",
             uac2: "7578",
