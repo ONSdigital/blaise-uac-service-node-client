@@ -13,6 +13,7 @@ declare class BusApiClient {
     getUacCodeCount(instrumentName: string): Promise<UacCount>;
     getUacCodes(instrumentName: string): Promise<InstrumentUacDetails>;
     getUacCodesByCaseId(instrumentName: string): Promise<InstrumentUacDetailsByCaseId>;
+    getDisabledUacCodes(instrumentName: string): Promise<InstrumentUacDetails>;
     importUACs(uacs: string[]): Promise<UacImport>;
     private url;
     private get;

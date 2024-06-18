@@ -1,7 +1,7 @@
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import 'regenerator-runtime/runtime'
-import BusApiClient, {InstrumentUacDetailsMock, InstrumentUacDetailsByCaseIdMock} from "../bus-api-client";
+import BusApiClient, {InstrumentUacDetailsMock, InstrumentUacDetailsByCaseIdMock, InstrumentDisabledUacDetailsMock } from "../bus-api-client";
 
 const mock = new MockAdapter(axios, {onNoMatch: "throwException"});
 const busApiUrl = "testUri";
@@ -101,6 +101,24 @@ describe("busApiClientTest", () => {
             let instruments = await busApiClientTest.getUacCodesByCaseId(instrumentName);
 
             expect(instruments).toEqual(InstrumentUacDetailsByCaseIdMock);
+        });
+    });
+
+    describe("get all disabled UACs for an instrument", () => {
+        beforeEach(() => {
+            mock.onGet(`http://${busApiUrl}/uacs/uac/${instrumentName}/disabled`).reply(200,
+                InstrumentDisabledUacDetailsMock,
+            );
+        });
+
+        afterEach(() => {
+            mock.reset();
+        });
+
+        it("returns a dictionary of all disabled UAC details associated to the instrument", async () => {
+            let instruments = await busApiClientTest.getDisabledUacCodes(instrumentName);
+
+            expect(instruments).toEqual(InstrumentDisabledUacDetailsMock);
         });
     });
 
