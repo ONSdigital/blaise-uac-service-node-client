@@ -7,6 +7,7 @@ interface InstrumentUacDetailsByCaseId {
 interface UacInfo {
     instrument_name: string;
     case_id: string;
+    disabled: string;
     uac_chunks: UacChunks;
     full_uac?: string;
 }

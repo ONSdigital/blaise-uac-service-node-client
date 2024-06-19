@@ -1,7 +1,7 @@
 import AuthProvider from "./authentication/authentication-provider";
 import { AxiosInstance } from "axios";
 import { InstrumentUacDetails, InstrumentUacDetailsByCaseId, UacCount, UacImport } from "./interfaces/instrument-uac-details";
-import { InstrumentUacDetailsMock, InstrumentUacDetailsByCaseIdMock } from "./mock-objects/instrument-uac-details-mocks";
+import { InstrumentUacDetailsMock, InstrumentUacDetailsByCaseIdMock, InstrumentDisabledUacDetailsMock } from "./mock-objects/instrument-uac-details-mocks";
 declare class BusApiClient {
     BUS_API_URL: string;
     BUS_CLIENT_ID: string;
@@ -14,10 +14,11 @@ declare class BusApiClient {
     getUacCodes(instrumentName: string): Promise<InstrumentUacDetails>;
     getUacCodesByCaseId(instrumentName: string): Promise<InstrumentUacDetailsByCaseId>;
     importUACs(uacs: string[]): Promise<UacImport>;
+    getDisabledUacCodes(instrumentName: string): Promise<InstrumentUacDetails>;
     private url;
     private get;
     private post;
 }
 export default BusApiClient;
 export { InstrumentUacDetails, InstrumentUacDetailsByCaseId };
-export { InstrumentUacDetailsMock, InstrumentUacDetailsByCaseIdMock };
+export { InstrumentUacDetailsMock, InstrumentUacDetailsByCaseIdMock, InstrumentDisabledUacDetailsMock };
