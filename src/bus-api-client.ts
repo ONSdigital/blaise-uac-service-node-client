@@ -54,6 +54,14 @@ class BusApiClient {
         return await this.get(`/uacs/uac/${instrumentName}/disabled`);
     }
 
+    async enableUac(uac: string) {
+        await this.get(`/uacs/uac/enable/${uac}`);
+    }
+    
+    async disableUac(uac: string) {
+        await this.get(`/uacs/uac/disable/${uac}`);
+    }
+
     private url(url: string): string {
         if (!url.startsWith("/")) {
             url = `/${url}`;
