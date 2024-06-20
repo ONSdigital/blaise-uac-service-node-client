@@ -15,6 +15,8 @@ declare class BusApiClient {
     getUacCodesByCaseId(instrumentName: string): Promise<InstrumentUacDetailsByCaseId>;
     importUACs(uacs: string[]): Promise<UacImport>;
     getDisabledUacCodes(instrumentName: string): Promise<InstrumentUacDetails>;
+    enableUac(uac: string): Promise<any>;
+    disableUac(uac: string): Promise<any>;
     private url;
     private get;
     private post;
