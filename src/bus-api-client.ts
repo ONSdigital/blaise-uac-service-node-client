@@ -54,12 +54,12 @@ class BusApiClient {
         return await this.get(`/uacs/uac/${instrumentName}/disabled`);
     }
 
-    async enableUac(uac: string) {
-        await this.get(`/uacs/uac/enable/${uac}`);
+    async enableUac(uac: string): Promise<any> {
+        return await this.get(`/uacs/uac/enable/${uac}`);
     }
-    
-    async disableUac(uac: string) {
-        await this.get(`/uacs/uac/disable/${uac}`);
+
+    async disableUac(uac: string): Promise<any> {
+        return await this.get(`/uacs/uac/disable/${uac}`);
     }
 
     private url(url: string): string {
