@@ -9,6 +9,8 @@ const busClientId = "1234534";
 
 const instrumentName = "DST1234A";
 
+const uac = "5678";
+
 const busApiClientTest = new BusApiClient(`http://${busApiUrl}`, busClientId);
 
 describe("busApiClientTest", () => {
@@ -137,6 +139,38 @@ describe("busApiClientTest", () => {
             let uacImport = await busApiClientTest.importUACs(["123412341234", "432143214321"]);
 
             expect(uacImport.uacs_imported).toEqual(2);
+        });
+    })
+
+    describe("disable uac", () => {
+        beforeEach(() => {
+            mock.onGet(`http://${busApiUrl}/uacs/uac/disable/${uac}`).reply(200);
+        });
+
+        afterEach(() => {
+            mock.reset();
+        });
+
+        it("returns no error messages to indicate it was successful", async () => {
+            let disableUacResponse = await busApiClientTest.disableUac("5678");
+
+            expect(disableUacResponse).toEqual(undefined);
+        });
+    })
+
+    describe("enable uac", () => {
+        beforeEach(() => {
+            mock.onGet(`http://${busApiUrl}/uacs/uac/enable/${uac}`).reply(200);
+        });
+
+        afterEach(() => {
+            mock.reset();
+        });
+
+        it("returns no error messages to indicate it was successful", async () => {
+            let enableUacResponse = await busApiClientTest.enableUac("5678");
+
+            expect(enableUacResponse).toEqual(undefined);
         });
     })
 });
