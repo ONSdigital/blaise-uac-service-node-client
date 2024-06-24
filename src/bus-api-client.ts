@@ -2,7 +2,7 @@ import AuthProvider from "./authentication/authentication-provider"
 import axios, {AxiosInstance} from "axios";
 
 import { InstrumentUacDetails, InstrumentUacDetailsByCaseId, UacCount, UacImport} from "./interfaces/instrument-uac-details";
-import {InstrumentUacDetailsMock, InstrumentUacDetailsByCaseIdMock } from "./mock-objects/instrument-uac-details-mocks"
+import {InstrumentUacDetailsMock, InstrumentUacDetailsByCaseIdMock, InstrumentDisabledUacDetailsMock } from "./mock-objects/instrument-uac-details-mocks"
 
 class BusApiClient {
     BUS_API_URL: string;
@@ -50,6 +50,18 @@ class BusApiClient {
         return await this.post(`/uacs/import`, uacs)
     }
 
+    async getDisabledUacCodes(instrumentName: string): Promise<InstrumentUacDetails> {
+        return await this.get(`/uacs/uac/${instrumentName}/disabled`);
+    }
+
+    async enableUac(uac: string): Promise<any> {
+        return await this.get(`/uacs/uac/enable/${uac}`);
+    }
+
+    async disableUac(uac: string): Promise<any> {
+        return await this.get(`/uacs/uac/disable/${uac}`);
+    }
+
     private url(url: string): string {
         if (!url.startsWith("/")) {
             url = `/${url}`;
@@ -79,4 +91,4 @@ class BusApiClient {
 export default BusApiClient;
 
 export {InstrumentUacDetails, InstrumentUacDetailsByCaseId};
-export {InstrumentUacDetailsMock, InstrumentUacDetailsByCaseIdMock }
+export {InstrumentUacDetailsMock, InstrumentUacDetailsByCaseIdMock, InstrumentDisabledUacDetailsMock }
