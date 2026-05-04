@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "types": ["node"]
+  },
+  "exclude": ["coverage", "dist", "node_modules", "src/**/*.test.ts"],
+  "extends": "./tsconfig.json"
+}

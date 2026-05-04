@@ -1,38 +1,47 @@
-# bus-api-node-client
-Provides a node client to communicate securely to the Blaise UAC Service
+# BusClient
 
-### Consuming
+TypeScript ESM client for communicating securely with the Blaise UAC Service.
 
-Add a dependency to your package.json file:
-```
-"bus-api-node-client": "git+https://github.com/ONSdigital/bus-api-node-client"
-```
+## Consuming
 
-Add an import statement where you wish to consume the client and interfaces:
-```
-import BusApiClient from "bus-api-node-client";
+Add the dependency to your `package.json` file:
+
+```json
+"blaise-uac-service-node-client": "git+https://github.com/ONSdigital/blaise-uac-service-node-client.git"
 ```
 
-Declare and consume the client by passing the URL of the api and the client ID:
-```
-const busApiClientTest = new BusApiClient(`http://${BUS_API_URL}`, ${BUS_CLIENT_ID});
-```
+Import the client from the package root:
 
-Declare timeout for the HTTP client:
-```
-The client accpets a timeout in milliseconds (timeoutInMs) number parameter if you wish to explicitly set
-a timeout for the client. If this parameter is not passed then the default is used.
-
-To specify a timeout you need to instantiate the client as follows, where 1000 is the 
-timeout required:
-
-const busApiClientTest = new BusApiClient(`http://${BUS_API_URL}`, ${BUS_CLIENT_ID}, 1000);
+```ts
+import { BusClient } from "blaise-uac-service-node-client";
 ```
 
-### Mock objects
+Create the client by passing the service URL and client ID:
 
-Mock objects are available for use in tests
-
+```ts
+const busClient = new BusClient(`http://${BUS_URL}`, BUS_CLIENT_ID);
 ```
-const {InstrumentUacDetailsMock, InstrumentUacDetailsByCaseIdMock} = jest.requireActual("bus-api-node-client");
+
+If needed, pass an explicit timeout in milliseconds:
+
+```ts
+const busClient = new BusClient(`http://${BUS_URL}`, BUS_CLIENT_ID, 1000);
+```
+
+The package exports `BusClient` as both the default export and a named export.
+
+## Errors
+
+Structured error types are exported for callers that want to distinguish authentication failures from request failures:
+
+```ts
+import { AuthenticationError, BusClientError } from "blaise-uac-service-node-client";
+```
+
+## Mock Objects
+
+Mock data is exported for consumer tests:
+
+```ts
+import { disabledUacsMock, uacsByCaseIdMock, uacsMock } from "blaise-uac-service-node-client";
 ```
