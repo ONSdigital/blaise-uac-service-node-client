@@ -15,7 +15,8 @@ vi.mock("google-auth-library", () => {
 });
 
 import { AuthenticationError } from "../errors.js";
-import getGoogleAuthToken from "./googleTokenProvider.js";
+
+import { getGoogleAuthToken } from "./googleTokenProvider.js";
 
 afterEach(() => {
   vi.clearAllMocks();

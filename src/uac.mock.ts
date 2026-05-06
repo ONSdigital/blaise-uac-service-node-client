@@ -2,7 +2,7 @@ import { type Uacs, type UacsByCaseId } from "./uac.types.js";
 
 export const uacsMock: Uacs = {
   "000975653827": {
-    instrument_name: "dst2106a",
+    questionnaire_name: "dst2106a",
     case_id: "100000001",
     uac_chunks: {
       uac1: "0009",
@@ -13,7 +13,7 @@ export const uacsMock: Uacs = {
     disabled: "false",
   },
   "345365454564": {
-    instrument_name: "dst2106a",
+    questionnaire_name: "dst2106a",
     case_id: "100000002",
     uac_chunks: {
       uac1: "3453",
@@ -24,7 +24,7 @@ export const uacsMock: Uacs = {
     disabled: "false",
   },
   "978975785367": {
-    instrument_name: "dst2106a",
+    questionnaire_name: "dst2106a",
     case_id: "100000003",
     uac_chunks: {
       uac1: "9789",
@@ -38,7 +38,7 @@ export const uacsMock: Uacs = {
 
 export const uacsByCaseIdMock: UacsByCaseId = {
   "100000001": {
-    instrument_name: "dst2106a",
+    questionnaire_name: "dst2106a",
     case_id: "100000001",
     uac_chunks: {
       uac1: "0009",
@@ -49,7 +49,7 @@ export const uacsByCaseIdMock: UacsByCaseId = {
     disabled: "false",
   },
   "100000002": {
-    instrument_name: "dst2106a",
+    questionnaire_name: "dst2106a",
     case_id: "100000002",
     uac_chunks: {
       uac1: "3453",
@@ -60,7 +60,7 @@ export const uacsByCaseIdMock: UacsByCaseId = {
     disabled: "false",
   },
   "100000003": {
-    instrument_name: "dst2106a",
+    questionnaire_name: "dst2106a",
     case_id: "100000003",
     uac_chunks: {
       uac1: "9789",
@@ -75,7 +75,7 @@ export const uacsByCaseIdMock: UacsByCaseId = {
 
 export const disabledUacsMock: Uacs = {
   "123456783241": {
-    instrument_name: "dst2404a",
+    questionnaire_name: "dst2404a",
     case_id: "100000001",
     uac_chunks: {
       uac1: "1234",
@@ -86,7 +86,7 @@ export const disabledUacsMock: Uacs = {
     disabled: "true",
   },
   "345678909865": {
-    instrument_name: "dst2404a",
+    questionnaire_name: "dst2404a",
     case_id: "100000002",
     uac_chunks: {
       uac1: "3456",
@@ -97,7 +97,7 @@ export const disabledUacsMock: Uacs = {
     disabled: "true",
   },
   "567890121357": {
-    instrument_name: "dst2404a",
+    questionnaire_name: "dst2404a",
     case_id: "100000003",
     uac_chunks: {
       uac1: "5678",

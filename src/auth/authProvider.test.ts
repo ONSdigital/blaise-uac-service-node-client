@@ -1,10 +1,12 @@
-import AuthProvider from "./authProvider.js";
 import jwt from "jsonwebtoken";
 import { type Mock } from "vitest";
+
 import { AuthenticationError } from "../errors.js";
 
+import { AuthProvider } from "./authProvider.js";
+import { getGoogleAuthToken } from "./googleTokenProvider.js";
+
 vi.mock("./googleTokenProvider.js");
-import getGoogleAuthToken from "./googleTokenProvider.js";
 
 const mockedGetGoogleAuthToken = getGoogleAuthToken as Mock<() => Promise<string>>;
 

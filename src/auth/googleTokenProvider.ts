@@ -1,7 +1,8 @@
 import { GoogleAuth } from "google-auth-library";
+
 import { AuthenticationError } from "../errors.js";
 
-export default async function getGoogleAuthToken(targetAudience: string): Promise<string> {
+export async function getGoogleAuthToken(targetAudience: string): Promise<string> {
   const auth = new GoogleAuth();
 
   try {

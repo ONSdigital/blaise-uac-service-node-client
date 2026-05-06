@@ -7,7 +7,7 @@ interface UacsByCaseId {
 }
 
 interface Uac {
-  instrument_name: string;
+  questionnaire_name: string;
   case_id: string;
   disabled: string;
   uac_chunks: UacChunks;

@@ -1,7 +1,8 @@
 import jwt, { type JwtPayload } from "jsonwebtoken";
-import getGoogleAuthToken from "./googleTokenProvider.js";
 
-export default class AuthProvider {
+import { getGoogleAuthToken } from "./googleTokenProvider.js";
+
+export class AuthProvider {
   private readonly clientId: string;
   private token = "";
 

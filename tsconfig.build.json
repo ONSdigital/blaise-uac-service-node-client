@@ -2,6 +2,6 @@
   "compilerOptions": {
     "types": ["node"]
   },
-  "exclude": ["coverage", "dist", "node_modules", "src/**/*.test.ts"],
+  "exclude": ["src/**/*.mock.ts", "src/**/*.test.ts", "src/**/*.types.ts"],
   "extends": "./tsconfig.json"
 }

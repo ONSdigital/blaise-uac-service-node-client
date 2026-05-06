@@ -1,14 +1,23 @@
-import AuthProvider from "./auth/authProvider.js";
+import { AuthProvider } from "./auth/authProvider.js";
 import { BusClientError } from "./errors.js";
 import {
+  type Uac,
+  type UacCount,
+  type UacEnableDisableResponse,
+  type UacImport,
   type Uacs,
   type UacsByCaseId,
-  type UacCount,
-  type UacImport,
-  type UacEnableDisableResponse,
 } from "./uac.types.js";
 
-class BusClient {
+type WireUac = Omit<Uac, "questionnaire_name"> & {
+  instrument_name?: string;
+  questionnaire_name?: string;
+};
+
+type WireUacs = Record<string, WireUac>;
+type WireUacsByCaseId = Record<string, WireUac>;
+
+export class BusClient {
   private readonly busUrl: string;
   private readonly authProvider: AuthProvider;
   private readonly timeoutInMs?: number;
@@ -19,35 +28,47 @@ class BusClient {
     this.timeoutInMs = timeoutInMs;
   }
 
-  async generateUacCodes(instrumentName: string, caseIds: string[]): Promise<Uacs> {
-    return this.post<Uacs>("/uacs/generate", {
-      instrument_name: instrumentName,
+  async generateUacs(questionnaireName: string, caseIds: string[]): Promise<Uacs> {
+    const response = await this.post<WireUacs>("/uacs/generate", {
+      instrument_name: questionnaireName,
       case_ids: caseIds,
     });
+
+    return BusClient.normaliseUacs(response);
   }
 
-  async generateUacCodesForInstrument(instrumentName: string): Promise<Uacs> {
-    return this.post<Uacs>(`/uacs/instrument/${instrumentName}`, null);
+  async generateUacsForQuestionnaire(questionnaireName: string): Promise<Uacs> {
+    const response = await this.post<WireUacs>(`/uacs/instrument/${questionnaireName}`, null);
+
+    return BusClient.normaliseUacs(response);
   }
 
-  async getUacCodeCount(instrumentName: string): Promise<UacCount> {
-    return this.get<UacCount>(`/uacs/instrument/${instrumentName}/count`);
+  async getUacCount(questionnaireName: string): Promise<UacCount> {
+    return this.get<UacCount>(`/uacs/instrument/${questionnaireName}/count`);
   }
 
-  async getUacCodes(instrumentName: string): Promise<Uacs> {
-    return this.get<Uacs>(`/uacs/instrument/${instrumentName}`);
+  async getUacs(questionnaireName: string): Promise<Uacs> {
+    const response = await this.get<WireUacs>(`/uacs/instrument/${questionnaireName}`);
+
+    return BusClient.normaliseUacs(response);
   }
 
-  async getUacCodesByCaseId(instrumentName: string): Promise<UacsByCaseId> {
-    return this.get<UacsByCaseId>(`/uacs/instrument/${instrumentName}/bycaseid`);
+  async getUacsByCaseId(questionnaireName: string): Promise<UacsByCaseId> {
+    const response = await this.get<WireUacsByCaseId>(
+      `/uacs/instrument/${questionnaireName}/bycaseid`,
+    );
+
+    return BusClient.normaliseUacsByCaseId(response);
   }
 
   async importUacs(uacs: string[]): Promise<UacImport> {
     return this.post<UacImport>("/uacs/import", uacs);
   }
 
-  async getDisabledUacCodes(instrumentName: string): Promise<Uacs> {
-    return this.get<Uacs>(`/uacs/uac/${instrumentName}/disabled`);
+  async getDisabledUacs(questionnaireName: string): Promise<Uacs> {
+    const response = await this.get<WireUacs>(`/uacs/uac/${questionnaireName}/disabled`);
+
+    return BusClient.normaliseUacs(response);
   }
 
   async enableUac(uac: string): Promise<UacEnableDisableResponse> {
@@ -161,6 +182,30 @@ class BusClient {
     );
   }
 
+  private static normaliseUac(uac: WireUac): Uac {
+    const { instrument_name, questionnaire_name, ...rest } = uac;
+
+    return {
+      ...rest,
+      questionnaire_name: questionnaire_name ?? instrument_name ?? "",
+    };
+  }
+
+  private static normaliseUacs(uacs: WireUacs): Uacs {
+    return Object.fromEntries(
+      Object.entries(uacs).map(([uac, details]) => [uac, BusClient.normaliseUac(details)]),
+    );
+  }
+
+  private static normaliseUacsByCaseId(uacsByCaseId: WireUacsByCaseId): UacsByCaseId {
+    return Object.fromEntries(
+      Object.entries(uacsByCaseId).map(([caseId, details]) => [
+        caseId,
+        BusClient.normaliseUac(details),
+      ]),
+    );
+  }
+
   private toBusClientError(error: unknown): BusClientError {
     if (error instanceof BusClientError) {
       return error;
@@ -173,5 +218,3 @@ class BusClient {
     );
   }
 }
-
-export default BusClient;
