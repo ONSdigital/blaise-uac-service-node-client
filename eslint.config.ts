@@ -21,7 +21,9 @@ export default tseslint.config(
       globals: { ...globals.node },
     },
     settings: {
-      "import-x/resolver-next": [createTypeScriptImportResolver({ project: "./tsconfig.eslint.json" })],
+      "import-x/resolver-next": [
+        createTypeScriptImportResolver({ project: "./tsconfig.eslint.json" }),
+      ],
     },
   },
 
