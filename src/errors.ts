@@ -10,9 +10,6 @@ export class BusClientError extends Error {
     this.name = "BusClientError";
     this.statusCode = statusCode;
     this.originalError = originalError;
-
-    // Maintain proper prototype chain for instanceof checks
-    Object.setPrototypeOf(this, BusClientError.prototype);
   }
 }
 
@@ -23,6 +20,5 @@ export class AuthenticationError extends BusClientError {
   constructor(message: string, originalError?: Error) {
     super(message, undefined, originalError);
     this.name = "AuthenticationError";
-    Object.setPrototypeOf(this, AuthenticationError.prototype);
   }
 }

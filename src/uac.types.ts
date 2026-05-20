@@ -1,15 +1,10 @@
-interface Uacs {
-  [uac: string]: Uac;
-}
-
-interface UacsByCaseId {
-  [caseId: string]: Uac;
-}
+type Uacs = Record<string, Uac>;
+type UacsByCaseId = Record<string, Uac>;
 
 interface Uac {
   questionnaire_name: string;
   case_id: string;
-  disabled: string;
+  disabled: boolean;
   uac_chunks: UacChunks;
   full_uac?: string;
 }

@@ -1,6 +1,6 @@
 # Blaise UAC Service Node Client 🔢
 
-A robust, type-safe Node.js client for securely communicating with the Blaise UAC Service. Designed for service-to-service authentication and authorisation, this library provides immutable data contracts and standardised interaction patterns for UAC operations.
+A typed Node.js client for communicating with the Blaise UAC Service. It is designed for service-to-service authentication and keeps the runtime surface small: generate, fetch, import, enable, and disable UACs through a single client.
 
 ## 📝 Usage
 
@@ -14,24 +14,25 @@ Release versions can be found on this repo's [GitHub releases](https://github.co
 
 ### Implementation Example
 
-The client is designed for dependency injection. It exposes strongly-typed methods and provides structured error handling for reliable service communication.
+The client keeps the default Google auth flow built in, while still allowing an injected authorization header provider when a service needs a different credential source.
 
 ```typescript
 import { BusClient, AuthenticationError, BusClientError } from "blaise-uac-service-node-client";
 
-// Initialise the client with the base URL of your UAC service
-const BUS_URL = process.env.BUS_URL || "";
-const BUS_CLIENT_ID = process.env.BUS_CLIENT_ID || "";
+const busUrl = process.env.BUS_URL;
+const busClientId = process.env.BUS_CLIENT_ID;
 const TIMEOUT_MS = 1000;
 
-// Create the client with service URL, client ID, and optional timeout
-const busClient = new BusClient(`http://${BUS_URL}`, BUS_CLIENT_ID, TIMEOUT_MS);
+if (!busUrl || !busClientId) {
+  throw new Error("BUS_URL and BUS_CLIENT_ID must be set");
+}
 
-export async function authenticateUser() {
+// BUS_URL should be an absolute URL. Prefer HTTPS outside local development.
+const busClient = new BusClient(busUrl, busClientId, TIMEOUT_MS);
+
+export async function getQuestionnaireUacs(questionnaireName: string) {
   try {
-    // Methods are strongly typed, providing compile-time safety
-    const response = await busClient.authenticate();
-    return response;
+    return await busClient.getUacs(questionnaireName);
   } catch (error) {
     if (error instanceof AuthenticationError) {
       console.error("Authentication failed with UAC Service", error);
@@ -48,10 +49,19 @@ export async function authenticateUser() {
 Structured error types are exported for callers that need to distinguish between different failure modes:
 
 ```typescript
-import { AuthenticationError, BusClientError } from "blaise-uac-service-node-client";
+import { AuthenticationError, BusClient, BusClientError } from "blaise-uac-service-node-client";
+
+const busUrl = process.env.BUS_URL;
+const busClientId = process.env.BUS_CLIENT_ID;
+
+if (!busUrl || !busClientId) {
+  throw new Error("BUS_URL and BUS_CLIENT_ID must be set");
+}
+
+const busClient = new BusClient(busUrl, busClientId);
 
 try {
-  await busClient.authenticate();
+  await busClient.getUacCount("dst2106a");
 } catch (error) {
   if (error instanceof AuthenticationError) {
     // Handle authentication failures
@@ -83,7 +93,7 @@ This library follows strict clean-code principles:
 
 - **Modular Organisation**: Client implementation and auth providers are logically separated within the src/ directory (e.g., busClient, auth providers), enabling maintainability and clear responsibilities.
 
-- **Centralised Contracts**: All data contracts (types and interfaces) reside in the types/ directory to prevent circular dependencies and maintain a single source of truth.
+- **Centralised Contracts**: Public data contracts are defined in src/uac.types.ts to keep the package surface explicit and easy to review.
 
 - **Strict Error Handling**: Structured error types provide clear failure modes, allowing consumers to distinguish authentication failures from request failures.
 
