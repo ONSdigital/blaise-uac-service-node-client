@@ -27,7 +27,6 @@ if (!busUrl || !busClientId) {
   throw new Error("BUS_URL and BUS_CLIENT_ID must be set");
 }
 
-// BUS_URL should be an absolute URL. Prefer HTTPS outside local development.
 const busClient = new BusClient(busUrl, busClientId, TIMEOUT_MS);
 
 export async function getQuestionnaireUacs(questionnaireName: string) {

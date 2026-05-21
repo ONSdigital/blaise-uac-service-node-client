@@ -359,7 +359,6 @@ export class BusClient {
 
     return {
       ...rest,
-      // parseWireUac guarantees at least one name is always defined
       questionnaire_name: (questionnaire_name ?? instrument_name)!,
     };
   }
