@@ -24,8 +24,4 @@ interface UacImport {
   uacs_imported: number;
 }
 
-interface UacEnableDisableResponse {
-  message: string;
-}
-
-export type { Uac, UacChunks, UacCount, UacEnableDisableResponse, UacImport, Uacs, UacsByCaseId };
+export type { Uac, UacChunks, UacCount, UacImport, Uacs, UacsByCaseId };

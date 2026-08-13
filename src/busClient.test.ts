@@ -280,7 +280,9 @@ describe("BusClient", () => {
       fetchMock.mockResolvedValue(createJsonResponse(toWireUacs(disabledUacsMock)));
 
       const result = await busClient.getDisabledUacs(questionnaireName);
+      const { url } = getFetchCall();
 
+      expect(url).toBe(`http://${normalisedBusUrl}/uacs/instrument/${questionnaireName}/disabled`);
       expect(result).toEqual(disabledUacsMock);
     });
   });
@@ -296,36 +298,49 @@ describe("BusClient", () => {
   });
 
   describe("disableUac", () => {
-    it("returns a success message", async () => {
+    it("posts the UAC in the request body and accepts 204 responses", async () => {
       const testUac = "000975653827";
 
-      fetchMock.mockResolvedValue(createJsonResponse({ message: "UAC disabled successfully" }));
+      fetchMock.mockResolvedValue(new Response(null, { status: 204 }));
 
-      const result = await busClient.disableUac(testUac);
+      await expect(busClient.disableUac(testUac)).resolves.toBeUndefined();
 
-      expect(result.message).toEqual("UAC disabled successfully");
+      const { url, options } = getFetchCall();
+      const headers = new Headers(options?.headers);
+
+      expect(url).toBe(`http://${normalisedBusUrl}/uacs/uac/disable`);
+      expect(options?.method).toBe("POST");
+      expect(options?.body).toBe(JSON.stringify({ uac: testUac }));
+      expect(headers.get("Content-Type")).toBe("application/json");
     });
 
-    it("encodes UAC values before placing them in the URL path", async () => {
-      fetchMock.mockResolvedValue(createJsonResponse({ message: "UAC disabled successfully" }));
+    it("preserves UAC values as JSON body content", async () => {
+      fetchMock.mockResolvedValue(new Response(null, { status: 204 }));
 
       await busClient.disableUac("0009/7565?");
 
-      const { url } = getFetchCall();
+      const { url, options } = getFetchCall();
 
-      expect(url).toBe(`http://${normalisedBusUrl}/uacs/uac/disable/0009%2F7565%3F`);
+      expect(url).toBe(`http://${normalisedBusUrl}/uacs/uac/disable`);
+      expect(options?.body).toBe(JSON.stringify({ uac: "0009/7565?" }));
     });
   });
 
   describe("enableUac", () => {
-    it("returns a success message", async () => {
+    it("posts the UAC in the request body and accepts 204 responses", async () => {
       const testUac = "000975653827";
 
-      fetchMock.mockResolvedValue(createJsonResponse({ message: "UAC enabled successfully" }));
+      fetchMock.mockResolvedValue(new Response(null, { status: 204 }));
 
-      const result = await busClient.enableUac(testUac);
+      await expect(busClient.enableUac(testUac)).resolves.toBeUndefined();
 
-      expect(result.message).toEqual("UAC enabled successfully");
+      const { url, options } = getFetchCall();
+      const headers = new Headers(options?.headers);
+
+      expect(url).toBe(`http://${normalisedBusUrl}/uacs/uac/enable`);
+      expect(options?.method).toBe("POST");
+      expect(options?.body).toBe(JSON.stringify({ uac: testUac }));
+      expect(headers.get("Content-Type")).toBe("application/json");
     });
   });
 

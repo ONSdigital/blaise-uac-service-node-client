@@ -3,7 +3,6 @@ import { BusClientError } from "./errors.js";
 import {
   type Uac,
   type UacCount,
-  type UacEnableDisableResponse,
   type UacImport,
   type Uacs,
   type UacsByCaseId,
@@ -105,34 +104,38 @@ export class BusClient {
 
   async getDisabledUacs(questionnaireName: string): Promise<Uacs> {
     const response = await this.request(
-      `/uacs/uac/${encodeURIComponent(questionnaireName)}/disabled`,
+      `/uacs/instrument/${encodeURIComponent(questionnaireName)}/disabled`,
     );
 
     return BusClient.parseUacRecord(response);
   }
 
-  async enableUac(uac: string): Promise<UacEnableDisableResponse> {
-    const response = await this.request(`/uacs/uac/enable/${encodeURIComponent(uac)}`);
-
-    return BusClient.parseUacEnableDisableResponse(response);
+  async enableUac(uac: string): Promise<void> {
+    await this.post("/uacs/uac/enable", { uac }, true);
   }
 
-  async disableUac(uac: string): Promise<UacEnableDisableResponse> {
-    const response = await this.request(`/uacs/uac/disable/${encodeURIComponent(uac)}`);
-
-    return BusClient.parseUacEnableDisableResponse(response);
+  async disableUac(uac: string): Promise<void> {
+    await this.post("/uacs/uac/disable", { uac }, true);
   }
 
-  private async post(path: string, data: unknown): Promise<unknown> {
+  private async post(path: string, data: unknown, expectEmptyBody = false): Promise<unknown> {
     const body = data === null ? undefined : JSON.stringify(data);
 
-    return this.request(path, {
-      method: "POST",
-      body,
-    });
+    return this.request(
+      path,
+      {
+        method: "POST",
+        body,
+      },
+      expectEmptyBody,
+    );
   }
 
-  private async request(path: string, init: RequestInit = {}): Promise<unknown> {
+  private async request(
+    path: string,
+    init: RequestInit = {},
+    expectEmptyBody = false,
+  ): Promise<unknown> {
     try {
       const headers = new Headers(init.headers);
       const authorizationHeader = await this.authorizationHeaderProvider.getAuthorizationHeader();
@@ -159,6 +162,10 @@ export class BusClient {
       }
 
       if (responseBody === undefined) {
+        if (expectEmptyBody) {
+          return undefined;
+        }
+
         throw new BusClientError("Response body was empty");
       }
 
@@ -299,12 +306,6 @@ export class BusClient {
     const record = BusClient.getObjectRecord(responseBody);
 
     return { uacs_imported: BusClient.getRequiredNumberField(record, "uacs_imported") };
-  }
-
-  private static parseUacEnableDisableResponse(responseBody: unknown): UacEnableDisableResponse {
-    const record = BusClient.getObjectRecord(responseBody);
-
-    return { message: BusClient.getRequiredStringField(record, "message") };
   }
 
   private static parseUacChunks(value: unknown): Uac["uac_chunks"] {
